@@ -1,10 +1,52 @@
+from functools import reduce
+import os
+import sys
+import logging
+import re
+
+_get_abs_path = lambda path: os.path.normpath(os.path.join(os.getcwd(), path))
+DEFAULT_DICT = None
+DEFAULT_DICT_NAME = 'simple_dict.txt'
+log_console = logging.StreamHandler(sys.stderr)
+default_logger = logging.getLogger(__name__)
+default_logger.setLevel(logging.DEBUG)
+default_logger.addHandler(log_console)
+
+
+class yn(object):
+    def __init__(self, dictionary=DEFAULT_DICT):
+        if dictionary == DEFAULT_DICT:
+            self.dictionary = dictionary
+        else:
+            self.dictionary = _get_abs_path(dictionary)
+        self.initialized = None
+        self.tmp_dir = None
+        self.cache_file = None
+
+    def __repr__(self):
+        return "Simple dictionary file={}".format(self.dictionary)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 '''
 pos: 肯定
 neg: 否定
 others: 语气词，无实际意义的词
 filter: 过滤词（可能判断错）
 '''
-def read_simple_dict(path):
+def load_simple_dict(path):
     yes = []
     no = []
     others = []
@@ -48,7 +90,7 @@ def read_simple_dict(path):
                 pass
     return yes, no, others, filtered
 
-from functools import reduce
+
 def boolean_replace(s, yes, no, others, filtered):
     sen1 = set(s)-others
     sen2 = sen1-yes-no
