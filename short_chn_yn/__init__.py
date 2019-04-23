@@ -10,7 +10,7 @@ from shutil import move as _replace_file
 from hashlib import md5
 
 DICT_WRITING = {}
-_get_abs_path = lambda path: os.path.normpath(os.path.join(os.getcwd(), path))
+_get_abs_path = lambda path: os.path.normpath(os.path.join(os.path.split(os.path.realpath(__file__))[0], path))
 DEFAULT_DICT = "simple_dict.txt"
 log_console = logging.StreamHandler(sys.stderr)
 default_logger = logging.getLogger(__name__)
@@ -28,11 +28,12 @@ class yn(object):
         self.initialized = None
         self.tmp_dir = None
         self.cache_file = None
+        self._initialize(dictionary)
 
     def __repr__(self):
         return "Simple dictionary file={}".format(self.dictionary)
 
-    def initialize(self, dictionary=None):
+    def _initialize(self, dictionary=None):
         if dictionary:
             abs_path = _get_abs_path(dictionary)
             if self.dictionary == abs_path and self.initialized:
@@ -165,12 +166,24 @@ class yn(object):
 
         return yes, no, others, filtered
 
-    def y_n(self, s, thre=10):
+    '''
+    识别肯否定
+    params: 
+    s: 字符串
+    thre: 字符串最长长度
+    return:
+    Positive: 肯定
+    Negtive: 否定
+    Nonsense: 无意义
+    Incognizance: 不识别
+    too long: 字符串长度超过thre
+    '''
+    def y_n(self, s, thre=6):
         if len(s) < thre:
             # 如果有过滤词，直接返回4
             for e in self.filtered:
                 if s.find(e) > -1:
-                    return s
+                    return "Incognizance"
             sen1 = set(s) - self.others
             sen2 = sen1 - self.yes - self.no
             # 无意义句子
