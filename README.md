@@ -1,5 +1,5 @@
 # short_chn_yn
-Literal short literal YES or NO recognition in Chinese.
+短文本中文字面肯定否定识别。
 
 逻辑异常简单，目的异常简单。
 
