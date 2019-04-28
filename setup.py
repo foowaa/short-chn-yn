@@ -3,12 +3,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 setup(
     name="short-chn-yn",
-    version="0.0.1",
+    version="0.0.2",
     author="cltian",
     author_email="cl.tian@live.com",
     description="Short Chinses literal YES or NO recognition by logic",
     long_description=long_description,
-    long_description_content_type="text/markdown",
     url="https://github.com/foowaa/short-chn-yn/",
     packages=find_packages(),
     classifiers=[
