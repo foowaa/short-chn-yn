@@ -1,37 +1,36 @@
 # short_chn_yn
-短文本中文字面肯定否定识别。
-
-逻辑异常简单，目的异常简单。
+使用逻辑的短文本中文字面肯定否定识别。
 
 ### 1.目的
 
-中文是由字组成的，日常交流中最常见的很短的字面肯定和否定，例如“嗯，是的”，“不是啊”，这种肯定和否定不需要太复杂语义识别。
+1. 中文是由字组成的，一般人的语速大概为[200字/分钟](https://dwz.cn/V7nIMYzq)，如果交流时间很短（1~2s），则输出汉字为3~7字;
 
-### 2.逻辑
+2. 日常交流中最常见是字面（不需要太复杂语义）肯定和否定
 
-Yes-or-No=Not(Xor(yes,no))。
+综上，日常交流中最常见的是3~7字的字面肯否定，例如“嗯，是的”，“不是啊”。我们主要解决这个问题。
 
-例如，“不是啊“，“不”表示False，“是”表示True，“啊”是无意义词，忽略，则Not(Xor(True,False))=False=No，故表示否定。
+### 2.建模
 
-对于更复杂的情况，“难道不是吗”，进行递归，Not(Xor(Not(Xor(False, False)), True))=True=Yes，表示肯定。
+完全通过逻辑运算的方式实现：
 
-这样做的问题是：
+`Yes-or-No=Not(Xor(yes,no))`
 
-1. 有的词有语义性，例如“嗯”，很难说清楚它表示肯定还是语气词。
-2. 中文表达的顺序性，例如“是不”，表示的是疑问，而根据代码，会识别为否定。
+例如，“不是啊“，“不”表示False，“是”表示True，“啊”是无意义词，忽略，则`Not(Xor(True,False))=False=No`，故表示否定。
+
+对于更复杂的情况，“难道不是吗”，进行递归，`Not(Xor(Not(Xor(False, False)), True))=True=Yes`，表示肯定。
+
 
 ### 3.使用
 
 ```python
-from prettyprinter import pprint 
-import short_chn_yn as yn
+import short-chn-yn as yn
 if __name__=="__main__":
     #实例化对象
     y1=yn.yn()
     s = "嗯是"
     #输入
     result = y1.y_n(s)
-    pprint(result)
+    print(result)
 ```
 
 其中的`simple_dict.txt`含有：`pos, neg, others, filter`四个内容，分别表示：肯定、否定、无意义词和特殊处理词(解决问题2)，用户可自行修改。
@@ -54,9 +53,12 @@ if __name__=="__main__":
 ​    too long: 字符串长度超过thre
 ```
 
+### 4.问题
+
+1. 有的词有语义性，例如“嗯”，很难说清楚它表示肯定还是语气词。
 
 
-### 4.协议
+### 5.协议
 
-3 Clause BSD
+MIT
 
