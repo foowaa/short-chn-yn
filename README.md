@@ -1,4 +1,7 @@
-# short_chn_yn
+# short-chn-yn
+
+[![PyPI version](https://badge.fury.io/py/short-chn-yn.svg)](https://badge.fury.io/py/short-chn-yn)
+
 使用逻辑的短文本中文字面肯定否定识别。
 
 ### 1.目的
